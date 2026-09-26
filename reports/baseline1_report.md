@@ -1,0 +1,44 @@
+# Baseline 1 — Structured Output from an LLM for Revit Commands
+
+**Status:**  Passed — 100% schema validity + semantic correctness on the test set
+
+## Goal
+
+Get structured output (JSON) from an LLM that converts a natural-language Revit instruction (e.g. *"Create a wall from (0,0,0) to (5000,0,0) on Level 1"*) into a structured command that can later be executed against the Revit API (Baseline 3). The output must conform to a fixed JSON Schema describing: the action, its target, its parameters, a confidence level, and free-text notes.
+
+## Attempt 1: `mradermacher/revit-coder-14b-GGUF`
+
+This model is a QLoRA fine-tune of `Qwen3-14B-Instruct` on \~177K Revit/BIM examples, available pre-quantized as GGUF. We started here since it's the most domain-relevant option on paper.
+
+### Diagnostic timeline
+
+| **#** | **Symptom** | **Root cause** | **Fix** |
+| ----- | ----------- | -------------- | ------- |
+| 1 | `confidence` returned values outside [0,1] (e.g. -20.0) | `LlamaGrammar.from_json_schema` enforces `type` but not `minimum`/`maximum` constraints | Changed `confidence` from a free number to a string enum (`low`/`medium`/`high`) |
+| 2 | `"Invalid control character"` on parse | Model emitted raw, unescaped newlines inside JSON strings | Used `json.loads(text, strict=False)` |
+| 3 | Schema validity improved (80%) but **every** output was semantically wrong (random actions, all parameters `null`) | Hand-rolled prompt tags (`<\|system\|>`, etc.) did not match the model's expected chat template | Switched to the correct chat template |
+| 4 | Same failure persisted even with the correct template | The model is Qwen3-based and defaults to "thinking mode"; grammar-constrained decoding forced JSON from token 0, conflicting with the model's reasoning step | Added `/no_think` to the system prompt |
+| 5 | Unconstrained generation produced repeating garbage tokens (LaTeX fragments like `\boxed`, `\cdot`, `\times`) | `temperature=0.1` was far below Qwen3's official recommendation and triggered infinite repetition loops | Set `temperature=0.7`, `top_p=0.8`, `top_k=20`, `repeat_penalty=1.1` |
+| 6 | Garbage output persisted with every fix, including on a plain completion with no chat template at all | — | Isolation test: a small, known-good model (`Qwen2.5-0.5B-Instruct`) worked fine on the exact same code/environment, ruling out an environment issue |
+| 7 | **Root cause found:** loaded the original checkpoint (`Aria101/revit-coder-14b`, safetensors) directly via `transformers` | The HuggingFace repo has `config.json` and `tokenizer.json` but **no actual weight files** (`model-0000X-of-00006.safetensors` are missing; total repo size is 17.9 MB — impossible for a 14B model) | **The model is unusable as published** — the source checkpoint is incomplete, so any GGUF derived from it is necessarily broken |
+
+### Conclusion
+
+The problem was never in our code, settings, or environment (all independently verified as correct). It was the model's source repository on HuggingFace — missing weights.
+
+## Decision: switch to an official base model
+
+After weighing the options (try another quantization / load the original checkpoint to confirm / switch models), we moved to **Qwen/Qwen2.5-Coder-14B-Instruct-GGUF** (the official release from the Qwen team, `Q5_K_M`, \~9.8 GB) instead of the broken fine-tune, relying on **few-shot prompting** (full instruction → JSON examples in the system prompt) to make up for the lack of Revit-specific tuning.
+
+## Result
+
+Tested against 10 varied instructions (create / move / delete / query / modify across different element types):
+
+- **Schema validity: 10/10 = 100%**
+- **Semantic correctness: 10/10** — every action was correct, and every relevant parameter (coordinates, element IDs, family types, parameter name/value) was extracted correctly
+
+### Note
+
+`Qwen2.5-Coder-14B-Instruct` is **not** fine-tuned on Revit data — it's a general-purpose code model. The strong result comes from three things combined: general knowledge from pretraining (likely including exposure to Revit API code/docs), the few-shot examples teaching the exact schema mapping, and grammar-constrained decoding guaranteeing structural correctness.
+
+**Takeaway for the project:** a strong general-purpose model + good prompting + grammar constraints outperformed a domain-specific fine-tune (which, in practice, turned out to be broken). Worth documenting as a finding — it raises a real question of whether fine-tuning is even necessary here, given a good schema and prompt.

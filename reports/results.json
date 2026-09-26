@@ -1,0 +1,222 @@
+[
+  {
+    "instruction": "Create a wall from point (0,0,0) to (5000,0,0) on Level 1 with height 3000mm",
+    "output": {
+      "action": "create_wall",
+      "target": {"element_id": null, "category": null, "filter": null},
+      "parameters": {
+        "start_point": [0, 0, 0],
+        "end_point": [5000, 0, 0],
+        "level": "Level 1",
+        "height": 3000,
+        "width": null,
+        "family_type": null,
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 9.66
+  },
+  {
+    "instruction": "Add a door with type 'Single-Flush: 900x2100mm' at element id 45021",
+    "output": {
+      "action": "create_door",
+      "target": {"element_id": 45021, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": "Single-Flush: 900x2100mm",
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 8.44
+  },
+  {
+    "instruction": "Create a window on the wall with element id 45010, family type 'Fixed: 1200x1200mm'",
+    "output": {
+      "action": "create_window",
+      "target": {"element_id": 45010, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": "Fixed: 1200x1200mm",
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 8.79
+  },
+  {
+    "instruction": "Move the column with id 39012 by 500mm in the x direction",
+    "output": {
+      "action": "move_element",
+      "target": {"element_id": 39012, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": null,
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": [500, 0, 0]
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 8.19
+  },
+  {
+    "instruction": "Delete all elements in category Furniture on Level 2",
+    "output": {
+      "action": "delete_element",
+      "target": {"element_id": null, "category": "Furniture", "filter": "level = Level 2"},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": null,
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 7.53
+  },
+  {
+    "instruction": "Change the height parameter of wall id 45010 to 4000mm",
+    "output": {
+      "action": "modify_parameter",
+      "target": {"element_id": 45010, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": 4000,
+        "width": null,
+        "family_type": null,
+        "parameter_name": "Height",
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 7.95
+  },
+  {
+    "instruction": "Create a floor on Level 1 with family type 'Generic 300mm'",
+    "output": {
+      "action": "create_floor",
+      "target": {"element_id": null, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": "Level 1",
+        "height": null,
+        "width": null,
+        "family_type": "Generic 300mm",
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 7.84
+  },
+  {
+    "instruction": "Show me all doors on Level 3",
+    "output": {
+      "action": "query_elements",
+      "target": {"element_id": null, "category": "Doors", "filter": "level = Level 3"},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": null,
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 7.57
+  },
+  {
+    "instruction": "Create a new level called 'Level 4' at elevation 12000mm",
+    "output": {
+      "action": "create_level",
+      "target": {"element_id": null, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": "Level 4",
+        "height": 12000,
+        "width": null,
+        "family_type": null,
+        "parameter_name": null,
+        "parameter_value": null,
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 8.1
+  },
+  {
+    "instruction": "Set the comments parameter of element 51022 to 'Needs review'",
+    "output": {
+      "action": "modify_parameter",
+      "target": {"element_id": 51022, "category": null, "filter": null},
+      "parameters": {
+        "start_point": null,
+        "end_point": null,
+        "level": null,
+        "height": null,
+        "width": null,
+        "family_type": null,
+        "parameter_name": "Comments",
+        "parameter_value": "Needs review",
+        "offset": null
+      },
+      "confidence": "high",
+      "notes": null
+    },
+    "schema_valid": true,
+    "seconds": 7.43
+  }
+]

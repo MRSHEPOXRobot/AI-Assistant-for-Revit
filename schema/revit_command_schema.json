@@ -1,0 +1,188 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RevitCommand",
+  "description": "Structured representation of a single Revit action derived from a natural-language instruction.",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "create_wall",
+        "create_door",
+        "create_window",
+        "create_floor",
+        "create_column",
+        "create_level",
+        "modify_parameter",
+        "move_element",
+        "delete_element",
+        "query_elements",
+        "unknown"
+      ],
+      "description": "The Revit operation to perform."
+    },
+    "target": {
+      "type": "object",
+      "description": "How to locate the element(s) this action applies to. Required for modify/move/delete/query, omit for create_* actions.",
+      "properties": {
+        "element_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Explicit Revit ElementId if known."
+        },
+        "category": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Revit category to filter by, e.g. Walls, Doors, Windows."
+        },
+        "filter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Free-text filter criteria, e.g. 'level = Level 1 AND type = Basic Wall'."
+        },
+        "host_element_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "For create_door/create_window: the ElementId of the existing host wall the new element attaches to. NOT the same as element_id, which identifies the target element itself for modify/move/delete/query actions."
+        }
+      },
+      "required": [
+        "element_id",
+        "category",
+        "filter",
+        "host_element_id"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Key-value pairs of geometric or Revit parameter values needed to perform the action.",
+      "properties": {
+        "start_point": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "[x, y, z] in the active project's units."
+        },
+        "end_point": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "level": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Level name, e.g. 'Level 1'."
+        },
+        "height": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "width": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "family_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Revit family/type name, e.g. 'Basic Wall: Generic - 200mm'."
+        },
+        "parameter_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Used with modify_parameter: name of the parameter to change."
+        },
+        "parameter_value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Used with modify_parameter: new value as string (caller casts as needed)."
+        },
+        "offset": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Used with move_element: [dx, dy, dz]."
+        },
+        "elevation": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Vertical (Z) position for a level (create_level). Distinct from 'height', which is the height dimension of an object like a wall or door."
+        }
+      },
+      "required": [
+        "start_point",
+        "end_point",
+        "level",
+        "height",
+        "width",
+        "family_type",
+        "parameter_name",
+        "parameter_value",
+        "offset",
+        "elevation"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "description": "Model's self-reported confidence that this structured output correctly captures the instruction."
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Any ambiguity or assumption the model had to make."
+    }
+  },
+  "required": [
+    "action",
+    "target",
+    "parameters",
+    "confidence",
+    "notes"
+  ]
+}
