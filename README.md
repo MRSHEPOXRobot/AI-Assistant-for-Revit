@@ -2,10 +2,9 @@
   <tr>
     <td width="80%">
       <h1>AI Agent for Revit</h1>
-      <p>AI Assistant for Autodesk Revit</p>
     </td>
     <td width="20%" align="right">
-      <img src="assets/revitai-logo-black.svg" width="1000">
+      <img src="assets/revitai-logo-black.svg" width="3000">
     </td>
   </tr>
 </table>
