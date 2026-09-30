@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="assets/revitai-logo-black.svg" width="800">
+  <img src="assets/revitai-logo-black.svg" width="200">
 </p>
+
 # AI Agent for Revit
 
 ## Overview
