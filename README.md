@@ -5,7 +5,7 @@
       <p>AI Assistant for Autodesk Revit</p>
     </td>
     <td width="20%" align="right">
-      <img src="assets/revitai-logo-black.svg" width="100">
+      <img src="assets/revitai-logo-black.svg" width="1000">
     </td>
   </tr>
 </table>
