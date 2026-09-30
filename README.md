@@ -1,13 +1,11 @@
-<table>
-  <tr>
-    <td width="80%">
-      <h1>AI Agent for Revit</h1>
-    </td>
-    <td width="20%" align="right">
-      <img src="assets/revitai-logo-black.svg" width="3000">
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/revitai-logo-horizontal-black.svg">
+    <img src="assets/revitai-logo-horizontal.svg" alt="RevitAI" width="480">
+  </picture>
+</p>
+
+# AI Agent for Revit
 
 ## Overview
 
