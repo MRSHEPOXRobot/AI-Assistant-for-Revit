@@ -1,8 +1,14 @@
-<p align="center">
-  <img src="assets/revitai-logo-black.svg" width="200">
-</p>
-
-# AI Agent for Revit
+<table>
+  <tr>
+    <td width="80%">
+      <h1>AI Agent for Revit</h1>
+      <p>AI Assistant for Autodesk Revit</p>
+    </td>
+    <td width="20%" align="right">
+      <img src="assets/revitai-logo-black.svg" width="100">
+    </td>
+  </tr>
+</table>
 
 ## Overview
 
